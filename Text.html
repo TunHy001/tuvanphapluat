@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS tùy chỉnh */
+        /* CSS tùy chỉnh cho font và chuyển trang */
         body {
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
@@ -62,6 +62,11 @@
         }
         #chat-history::-webkit-scrollbar-thumb:hover {
             background: #94a3b8; /* cool-gray-400 */
+        }
+        
+        /* Tùy chỉnh cho nội dung Modal (giúp hiển thị văn bản đẹp hơn) */
+        .prose p {
+            margin-bottom: 1rem;
         }
     </style>
 </head>
@@ -437,7 +442,7 @@
                         <span class="text-sm text-gray-500">#giaothong #doisong</span>
                     </div>
                 </div>
-                 <div class="bg-white rounded-lg shadow overflow-hidden group">
+                <div class="bg-white rounded-lg shadow overflow-hidden group">
                     <div class="aspect-w-9 aspect-h-16 bg-gray-900 relative">
                         <img src="https://placehold.co/300x530/111827/FFFFFF?text=Video+3" alt="TikTok Video" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
@@ -464,6 +469,41 @@
             </div>
         </div>
 
+        <div id="login-page" class="content-page">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <h1 class="text-3xl font-bold mb-6 text-center">Đăng Nhập Tài Khoản</h1>
+                
+                <form action="#" class="space-y-6">
+                    <div>
+                        <label for="login-email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="login-email" placeholder="example@gmail.com" class="mt-1 w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="login-password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
+                        <input type="password" id="login-password" placeholder="••••••••" class="mt-1 w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                            <label for="remember-me" class="ml-2 block text-sm text-gray-900">Ghi nhớ đăng nhập</label>
+                        </div>
+                        <a href="#" class="text-sm text-blue-600 hover:underline">Quên mật khẩu?</a>
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-medium py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                            Đăng nhập
+                        </button>
+                    </div>
+                </form>
+
+                <p class="text-center text-sm text-gray-600 mt-6">
+                    Chưa có tài khoản? 
+                    <a href="#" class="font-medium text-blue-600 hover:underline">Đăng ký ngay</a>
+                </p>
+                <p class="text-center text-xs text-gray-500 mt-4">Tính năng "Tài khoản người dùng" cần có Backend và Cơ sở dữ liệu để hoạt động.</p>
+            </div>
+        </div>
+
         <div id="admin-page" class="content-page">
             <div class="flex h-full min-h-screen bg-gray-100 text-gray-800">
                 <aside class="w-64 flex-shrink-0 bg-gray-800 text-gray-300 p-4 flex flex-col">
@@ -471,7 +511,7 @@
                         <i data-lucide="shield-check" class="w-8 h-8 mr-2 text-blue-400"></i>
                         <span>Admin Panel</span>
                     </div>
-            
+                    
                     <nav class="flex-grow">
                         <a href="#" class="flex items-center px-3 py-2.5 rounded-lg bg-blue-600 text-white font-medium">
                             <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
@@ -485,7 +525,7 @@
                             <i data-lucide="book-copy" class="w-5 h-5 mr-3"></i>
                             <span>Quản lý Văn bản</span>
                         </a>
-                         <a href="#" class="flex items-center px-3 py-2.5 rounded-lg mt-2 hover:bg-gray-700 transition-colors">
+                        <a href="#" class="flex items-center px-3 py-2.5 rounded-lg mt-2 hover:bg-gray-700 transition-colors">
                             <i data-lucide="bot" class="w-5 h-5 mr-3"></i>
                             <span>Quản lý Chatbot</span>
                         </a>
@@ -500,13 +540,13 @@
                     </nav>
                     
                     <div class="mt-auto">
-                         <a href="#" data-page="home" class="nav-link-internal flex items-center px-3 py-2.5 rounded-lg mt-2 text-red-400 hover:bg-red-500 hover:text-white transition-colors">
+                        <a href="#" data-page="home" class="nav-link-internal flex items-center px-3 py-2.5 rounded-lg mt-2 text-red-400 hover:bg-red-500 hover:text-white transition-colors">
                             <i data-lucide="log-out" class="w-5 h-5 mr-3"></i>
                             <span>Quay về trang chủ</span>
                         </a>
                     </div>
                 </aside>
-            
+                
                 <div class="flex-1 flex flex-col">
                     <header class="bg-white shadow-md p-4 flex justify-between items-center">
                         <div class="relative w-1/3">
@@ -526,7 +566,7 @@
                             </div>
                         </div>
                     </header>
-            
+                    
                     <main class="flex-1 p-6 space-y-6">
                         <h1 class="text-3xl font-bold">Bảng điều khiển</h1>
                         
@@ -568,7 +608,7 @@
                                 </div>
                             </div>
                         </div>
-            
+                        
                         <div class="bg-white p-6 rounded-lg shadow">
                             <div class="flex justify-between items-center mb-4">
                                 <h2 class="text-xl font-semibold">Bài viết gần đây</h2>
@@ -633,41 +673,6 @@
             </div>
         </div>
 
-        <div id="login-page" class="content-page">
-            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
-                <h1 class="text-3xl font-bold mb-6 text-center">Đăng Nhập Tài Khoản</h1>
-                
-                <form action="#" class="space-y-6">
-                    <div>
-                        <label for="login-email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" id="login-email" placeholder="example@gmail.com" class="mt-1 w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label for="login-password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
-                        <input type="password" id="login-password" placeholder="••••••••" class="mt-1 w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                            <label for="remember-me" class="ml-2 block text-sm text-gray-900">Ghi nhớ đăng nhập</label>
-                        </div>
-                        <a href="#" class="text-sm text-blue-600 hover:underline">Quên mật khẩu?</a>
-                    </div>
-                    <div>
-                        <button type="submit" class="w-full bg-blue-600 text-white font-medium py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                            Đăng nhập
-                        </button>
-                    </div>
-                </form>
-
-                <p class="text-center text-sm text-gray-600 mt-6">
-                    Chưa có tài khoản? 
-                    <a href="#" class="font-medium text-blue-600 hover:underline">Đăng ký ngay</a>
-                </p>
-                <p class="text-center text-xs text-gray-500 mt-4">Tính năng "Tài khoản người dùng" cần có Backend và Cơ sở dữ liệu để hoạt động.</p>
-            </div>
-        </div>
-
     </main>
 
     <div id="document-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-[60]">
@@ -682,6 +687,7 @@
                 </main>
         </div>
     </div>
+    
     <footer class="bg-gray-800 text-gray-300 mt-12">
         <div class="container mx-auto px-6 py-10">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -756,13 +762,15 @@
                 if (mainHeader) mainHeader.style.display = 'none';
                 if (mainFooter) mainFooter.style.display = 'none';
                 // Xóa padding và class container để admin page chiếm toàn bộ không gian
-                mainContentContainer.classList.remove('p-4', 'md:p-8', 'container', 'mx-auto');
+                mainContentContainer.classList.remove('p-4', 'md:p-8', 'container', 'mx-auto', 'min-h-[calc(100vh-280px)]');
+                mainContentContainer.classList.add('p-0', 'min-h-screen');
             } else {
                 // Hiện lại header và footer cho các trang khác
                 if (mainHeader) mainHeader.style.display = 'block';
                 if (mainFooter) mainFooter.style.display = 'block';
                 // Thêm lại padding và class container cho các trang khác
-                mainContentContainer.classList.add('p-4', 'md:p-8', 'container', 'mx-auto');
+                mainContentContainer.classList.add('p-4', 'md:p-8', 'container', 'mx-auto', 'min-h-[calc(100vh-280px)]');
+                mainContentContainer.classList.remove('p-0', 'min-h-screen');
             }
 
             // Ẩn tất cả các trang
@@ -907,7 +915,7 @@
             'hon-nhan': {
                 title: 'Luật Hôn nhân và Gia đình 59/2014/QH13',
                 content: `
-                    <h3 class="text-xl font-bold mb-4">Chương I: NHỮNG QUY ĐỊNH CHUNG</h3>
+                    <h3 class="text-xl font-bold mb-4">Chương I: NHỮNG NGUYÊN TẮC CƠ BẢN</h3>
                     <div class="space-y-3">
                         <p><b>Điều 1. Phạm vi điều chỉnh</b></p>
                         <p>Luật này quy định chế độ hôn nhân và gia đình; chuẩn mực pháp lý cho cách ứng xử giữa các thành viên gia đình; trách nhiệm của cá nhân, tổ chức, Nhà nước và xã hội trong việc xây dựng, củng cố chế độ hôn nhân và gia đình.</p>
@@ -958,7 +966,7 @@
             document.body.style.overflow = ''; // Cho phép cuộn trang nền trở lại
         }
 
-        // 4. Gán sự kiện
+        // 4. Gán sự kiện cho các liên kết văn bản
         documentLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
