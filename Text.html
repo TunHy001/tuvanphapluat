@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tư vấn Pháp Luật</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS tùy chỉnh */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Lớp CSS cho link điều hướng đang active */
+        .nav-link.active {
+            color: #2563EB; /* text-blue-600 */
+            border-bottom: 2px solid #2563EB;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 4px;
+        }
+        
+        .nav-link:hover {
+            color: #3B82F6; /* text-blue-500 */
+        }
+        
+        /* Ẩn các trang nội dung */
+        .content-page {
+            display: none;
+        }
+        
+        /* Hiển thị trang active */
+        .content-page.active {
+            display: block;
+        }
+
+        /* Tùy chỉnh thanh cuộn cho chatbot */
+        #chat-history::-webkit-scrollbar {
+            width: 6px;
+        }
+        #chat-history::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        #chat-history::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* cool-gray-300 */
+            border-radius: 10px;
+        }
+        #chat-history::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* cool-gray-400 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-blue-600" data-page="home">
+                <i data-lucide="scale" class="inline-block w-6 h-6 -mt-1"></i>
+                Tư vấn Pháp Luật
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-5 text-sm font-medium text-gray-600">
+                <a href="#" class="nav-link active" data-page="home">Trang chủ</a>
+                <a href="#" class="nav-link" data-page="chatbot">Chatbot</a>
+                <a href="#" class="nav-link" data-page="documents">Tài liệu</a>
+                <a href="#" class="nav-link" data-page="news">Tin tức</a>
+                <a href="#" class="nav-link" data-page="tiktok">TikTok</a>
+                <a href="#" class="nav-link" data-page="collab">Hợp tác</a>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-3">
+                <a href="#" data-page="login" class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600">
+                    <i data-lucide="user" class="inline-block w-4 h-4 mr-1"></i>
+                    Đăng nhập
+                </a>
+                <a href="#" data-page="admin" class="flex items-center bg-gray-800 text-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-gray-700">
+                    <i data-lucide="settings" class="inline-block w-4 h-4 mr-1.5"></i>
+                    Quản trị
+                </a>
+            </div>
+
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 p-2 rounded-lg hover:bg-gray-100">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </nav>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pt-2 pb-4 space-y-2 border-t">
+            <a href="#" class="block nav-link active" data-page="home">Trang chủ</a>
+            <a href="#" class="block nav-link" data-page="chatbot">Chatbot</a>
+            <a href="#" class="block nav-link" data-page="documents">Tài liệu</a>
+            <a href="#" class="block nav-link" data-page="news">Tin tức</a>
+            <a href="#" class="block nav-link" data-page="tiktok">TikTok</a>
+            <a href="#" class="block nav-link" data-page="collab">Hợp tác</a>
+            <hr class="my-2">
+            <a href="#" class="block nav-link" data-page="login">Đăng nhập / Đăng ký</a>
+            <a href="#" class="block nav-link" data-page="admin">Quản trị</a>
+        </div>
+    </header>
+
+    <main id="content-container" class="container mx-auto p-4 md:p-8 min-h-[calc(100vh-280px)]">
+
+        <div id="home-page" class="content-page active space-y-8">
+            <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-8 md:p-12 rounded-lg shadow-lg text-center">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4">Chào mừng đến với Tư vấn Pháp Luật</h1>
+                <p class="text-lg text-blue-100 mb-6 max-w-2xl mx-auto">Sứ mệnh của chúng tôi là làm cho pháp luật trở nên dễ hiểu và dễ tiếp cận hơn với mọi người.</p>
+                <div class="max-w-2xl mx-auto">
+                    <div class="relative">
+                        <input type="search" placeholder="Tìm kiếm nhanh từ khóa pháp luật (ví dụ: luật đất đai, ly hôn...)" class="w-full p-4 pr-16 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 text-white p-2.5 rounded-md hover:bg-blue-700 transition-colors">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow space-y-4">
+                    <h2 class="text-2xl font-semibold border-b pb-2">Tin tức pháp luật mới</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4 group p-3 rounded-lg hover:bg-gray-50">
+                            <img src="https://placehold.co/100x100/EBF8FF/3B82F6?text=Lu%E1%BA%ADt" alt="Tin tức" class="w-24 h-24 rounded-lg object-cover flex-shrink-0">
+                            <div>
+                                <span class="text-sm bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-medium">Chính sách mới</span>
+                                <h3 class="text-lg font-semibold group-hover:text-blue-600 transition-colors mt-1">Luật Đất đai 2024: 10 điểm mới người dân cần biết</h3>
+                                <p class="text-sm text-gray-600 line-clamp-2">Luật Đất đai (sửa đổi) vừa được thông qua với nhiều thay đổi lớn, tác động trực tiếp đến quyền lợi của người sử dụng đất...</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4 group p-3 rounded-lg hover:bg-gray-50">
+                            <img src="https://placehold.co/100x100/FFF7ED/F97316?text=Ph%C3%A2n+t%C3%ADch" alt="Tin tức" class="w-24 h-24 rounded-lg object-cover flex-shrink-0">
+                            <div>
+                                <span class="text-sm bg-orange-100 text-orange-700 px-2 py-0.5 rounded font-medium">Phân tích</span>
+                                <h3 class="text-lg font-semibold group-hover:text-blue-600 transition-colors mt-1">Quy định mới về đăng ký khai sinh trực tuyến</h3>
+                                <p class="text-sm text-gray-600 line-clamp-2">Từ ngày 01/07/2025, thủ tục đăng ký khai sinh trực tuyến sẽ được đơn giản hóa, áp dụng trên toàn quốc...</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4 group p-3 rounded-lg hover:bg-gray-50">
+                            <img src="https://placehold.co/100x100/FEF2F2/EF4444?text=C%E1%BA%A3nh+b%C3%A1o" alt="Tin tức" class="w-24 h-24 rounded-lg object-cover flex-shrink-0">
+                            <div>
+                                <span class="text-sm bg-red-100 text-red-700 px-2 py-0.5 rounded font-medium">Cảnh báo</span>
+                                <h3 class="text-lg font-semibold group-hover:text-blue-600 transition-colors mt-1">Cẩn trọng lừa đảo mạo danh cơ quan công an</h3>
+                                <p class="text-sm text-gray-600 line-clamp-2">Các đối tượng sử dụng công nghệ cao để giả mạo số điện thoại, yêu cầu người dân chuyển tiền để "điều tra vụ án"...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" data-page="news" class="nav-link-internal text-blue-600 font-medium hover:underline inline-block mt-2">Xem thêm tin tức <i data-lucide="arrow-right" class="inline-block w-4 h-4"></i></a>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-2xl font-semibold border-b pb-2 mb-4">TikTok Tuyên truyền</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="aspect-w-9 aspect-h-16 bg-gray-900 rounded-lg overflow-hidden group relative">
+                                <img src="https://placehold.co/200x350/111827/FFFFFF?text=TikTok+Video+1" alt="TikTok Video" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i data-lucide="play" class="w-12 h-12 text-white"></i>
+                                </div>
+                            </div>
+                            <div class="aspect-w-9 aspect-h-16 bg-gray-900 rounded-lg overflow-hidden group relative">
+                                <img src="https://placehold.co/200x350/111827/FFFFFF?text=TikTok+Video+2" alt="TikTok Video" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i data-lucide="play" class="w-12 h-12 text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" data-page="tiktok" class="nav-link-internal mt-4 inline-block text-blue-600 font-medium hover:underline">Xem thêm video <i data-lucide="arrow-right" class="inline-block w-4 h-4"></i></a>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-2xl font-semibold border-b pb-2 mb-4">Hỏi - Đáp nổi bật</h2>
+                        <div class="space-y-3">
+                            <a href="#" class="block p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                <span class="font-semibold text-gray-800">Hỏi:</span> Thủ tục ly hôn đơn phương cần những gì?
+                            </a>
+                            <a href="#" class="block p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                <span class="font-semibold text-gray-800">Hỏi:</span> Mua đất không có sổ đỏ có rủi ro không?
+                            </a>
+                            <a href="#" data-page="chatbot" class="nav-link-internal mt-4 inline-block text-blue-600 font-medium hover:underline">Hỏi đáp ngay với Chatbot <i data-lucide="message-circle" class="inline-block w-4 h-4"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="chatbot-page" class="content-page">
+            <h1 class="text-3xl font-bold mb-6 text-center">Chatbot Tư Vấn Pháp Luật</h1>
+            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="flex flex-col h-[70vh]">
+                    <div id="chat-history" class="flex-1 p-6 space-y-4 overflow-y-auto bg-gray-50">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-blue-600 text-white p-2.5 rounded-full w-10 h-10 flex-shrink-0 flex items-center justify-center">
+                                <i data-lucide="bot" class="w-6 h-6"></i>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm" style="max-width: 70%;">
+                                <p class="font-semibold text-blue-700">Bot Tư Vấn</p>
+                                <p class="text-gray-800">Xin chào! Tôi là chatbot tư vấn pháp luật. Bạn có câu hỏi nào cần giải đáp không?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 border-t bg-white">
+                        <p class="text-sm font-medium text-gray-600 mb-2">Gợi ý câu hỏi phổ biến:</p>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="suggested-question text-sm bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full hover:bg-blue-200 transition-colors">Thủ tục ly hôn?</button>
+                            <button class="suggested-question text-sm bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full hover:bg-blue-200 transition-colors">Luật đất đai 2024</button>
+                            <button class="suggested-question text-sm bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full hover:bg-blue-200 transition-colors">Làm sổ đỏ hết bao nhiêu?</button>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 border-t flex items-center gap-3">
+                        <input type="text" id="chat-input" placeholder="Nhập câu hỏi của bạn..." class="flex-1 w-full px-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button id="send-chat-btn" class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition-colors flex-shrink-0">
+                            <i data-lucide="send" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-sm text-gray-600 mt-4 max-w-2xl mx-auto">
+                <i data-lucide="alert-triangle" class="w-4 h-4 inline-block mr-1 text-yellow-500"></i> 
+                Lưu ý: Thông tin từ chatbot chỉ mang tính tham khảo. Để được tư vấn chuyên sâu, vui lòng <a href="#" class="text-blue-600 font-medium hover:underline">liên hệ luật sư</a>.
+            </p>
+        </div>
+
+        <div id="documents-page" class="content-page space-y-6">
+            <h1 class="text-3xl font-bold mb-6">Tra Cứu Tài Liệu Pháp Luật</h1>
+            
+            <div class="bg-white p-4 rounded-lg shadow-sm flex flex-col md:flex-row gap-4">
+                <input type="search" placeholder="Tìm theo tên văn bản, số hiệu..." class="flex-1 w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select class="w-full md:w-64 p-3 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">-- Tất cả chủ đề --</option>
+                    <option value="datdai">Đất đai</option>
+                    <option value="honnhan">Hôn nhân & Gia đình</option>
+                    <option value="laodong">Lao động</option>
+                    <option value="doanhnghiep">Doanh nghiệp</option>
+                    <option value="thue">Thuế</option>
+                </select>
+                <select class="w-full md:w-48 p-3 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">-- Năm ban hành --</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                </select>
+                <button class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">Tìm kiếm</button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-100 border-b">
+                        <tr>
+                            <th class="p-4 font-semibold">Số hiệu</th>
+                            <th class="p-4 font-semibold">Tên văn bản</th>
+                            <th class="p-4 font-semibold">Tóm tắt</th>
+                            <th class="p-4 font-semibold">Ngày ban hành</th>
+                            <th class="p-4 font-semibold">Tải về</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-4 whitespace-nowrap">Luật 31/2024/QH15</td>
+                            <td class="p-4 font-medium text-blue-600 hover:underline cursor-pointer" data-doc-id="dat-dai">Luật Đất đai</td>
+                            <td class="p-4 text-sm text-gray-700 max-w-sm">Quy định về chế độ sở hữu đất đai, quyền và nghĩa vụ của người sử dụng đất...</td>
+                            <td class="p-4 whitespace-nowrap">18/01/2024</td>
+                            <td class="p-4">
+                                <a href="#" class="text-blue-600 hover:text-blue-800" title="Tải về PDF">
+                                    <i data-lucide="file-down" class="w-5 h-5"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-4 whitespace-nowrap">59/2014/QH13</td>
+                            <td class="p-4 font-medium text-blue-600 hover:underline cursor-pointer" data-doc-id="hon-nhan">Luật Hôn nhân và Gia đình</td>
+                            <td class="p-4 text-sm text-gray-700 max-w-sm">Quy định chế độ hôn nhân và gia đình; chuẩn mực pháp lý cho cách ứng xử...</td>
+                            <td class="p-4 whitespace-nowrap">19/06/2014</td>
+                            <td class="p-4">
+                                <a href="#" class="text-blue-600 hover:text-blue-800" title="Tải về PDF">
+                                    <i data-lucide="file-down" class="w-5 h-5"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-4 whitespace-nowrap">45/2019/QH14</td>
+                            <td class="p-4 font-medium text-blue-600 hover:underline cursor-pointer" data-doc-id="lao-dong">Bộ luật Lao động</td>
+                            <td class="p-4 text-sm text-gray-700 max-w-sm">Quy định tiêu chuẩn lao động; quyền, nghĩa vụ, trách nhiệm của người lao động...</td>
+                            <td class="p-4 whitespace-nowrap">20/11/2019</td>
+                            <td class="p-4">
+                                <a href="#" class="text-blue-600 hover:text-blue-800" title="Tải về PDF">
+                                    <i data-lucide="file-down" class="w-5 h-5"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="news-page" class="content-page space-y-6">
+            <h1 class="text-3xl font-bold mb-6">Tin Tức & Phân Tích Pháp Luật</h1>
+            
+            <div class="bg-white rounded-lg shadow overflow-hidden md:flex group">
+                <img src="https://placehold.co/600x400/3B82F6/FFFFFF?text=Ph%C3%A2n+T%C3%ADch+Lu%E1%BA%ADt+M%E1%BB%9Bi" alt="Bài viết nổi bật" class="w-full md:w-1/2 h-64 md:h-auto object-cover">
+                <div class="p-6 md:p-8 flex flex-col justify-center">
+                    <span class="text-sm bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-medium self-start">Phân tích chuyên sâu</span>
+                    <h2 class="text-2xl md:text-3xl font-semibold mt-3 mb-3 group-hover:text-blue-600 transition-colors cursor-pointer">Phân tích Luật Kinh doanh Bất động sản 2023: Siết chặt phân lô, bán nền</h2>
+                    <p class="text-gray-600 mb-4">Luật mới siết chặt các điều kiện đối với chủ đầu tư, đặc biệt là quy định về việc phân lô, bán nền tại các đô thị loại I, II, III...</p>
+                    <a href="#" class="text-blue-600 font-medium hover:underline">Đọc thêm <i data-lucide="arrow-right" class="inline-block w-4 h-4"></i></a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow overflow-hidden flex flex-col group">
+                    <img src="https://placehold.co/400x250/EBF8FF/3B82F6?text=Ch%C3%ADnh+s%C3%A1ch" alt="Tin tức" class="w-full h-48 object-cover">
+                    <div class="p-5 flex-1 flex flex-col">
+                        <span class="text-sm text-gray-500">28/10/2025</span>
+                        <h3 class="text-xl font-semibold mt-2 mb-2 group-hover:text-blue-600 transition-colors cursor-pointer">Quy định mới về bảo hiểm y tế từ 2025</h3>
+                        <p class="text-gray-600 text-sm line-clamp-3 flex-1">Nhiều thay đổi về mức đóng, quyền lợi hưởng BHYT khi đi khám chữa bệnh trái tuyến...</p>
+                        <div class="flex justify-between items-center mt-4">
+                            <a href="#" class="text-blue-600 font-medium text-sm hover:underline">Đọc thêm</a>
+                            <button class="text-gray-500 hover:text-black" title="Chia sẻ">
+                                <i data-lucide="share-2" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow overflow-hidden flex flex-col group">
+                    <img src="https://placehold.co/400x250/FFF7ED/F97316?text=T%C3%ACnh+hu%E1%BB%91ng" alt="Tin tức" class="w-full h-48 object-cover">
+                    <div class="p-5 flex-1 flex flex-col">
+                        <span class="text-sm text-gray-500">27/10/2025</span>
+                        <h3 class="text-xl font-semibold mt-2 mb-2 group-hover:text-blue-600 transition-colors cursor-pointer">Xử lý thế nào khi hàng xóm xây nhà lấn đất?</h3>
+                        <p class="text-gray-600 text-sm line-clamp-3 flex-1">Phân tích tình huống pháp lý thực tế và các bước xử lý khi xảy ra tranh chấp đất đai với hàng xóm...</p>
+                        <div class="flex justify-between items-center mt-4">
+                            <a href="#" class="text-blue-600 font-medium text-sm hover:underline">Đọc thêm</a>
+                            <button class="text-gray-500 hover:text-black" title="Chia sẻ">
+                                <i data-lucide="share-2" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow overflow-hidden flex flex-col group">
+                    <img src="https://placehold.co/400x250/FEF2F2/EF4444?text=C%E1%BA%A3nh+b%C3%A1o" alt="Tin tức" class="w-full h-48 object-cover">
+                    <div class="p-5 flex-1 flex flex-col">
+                        <span class="text-sm text-gray-500">26/10/2025</span>
+                        <h3 class="text-xl font-semibold mt-2 mb-2 group-hover:text-blue-600 transition-colors cursor-pointer">Rủi ro khi lập vi bằng mua bán nhà đất</h3>
+                        <p class="text-gray-600 text-sm line-clamp-3 flex-1">Vi bằng không có giá trị thay thế công chứng, chứng thực hợp đồng. Người mua cần cẩn trọng...</p>
+                        <div class="flex justify-between items-center mt-4">
+                            <a href="#" class="text-blue-600 font-medium text-sm hover:underline">Đọc thêm</a>
+                            <button class="text-gray-500 hover:text-black" title="Chia sẻ">
+                                <i data-lucide="share-2" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="collab-page" class="content-page">
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <h1 class="text-3xl font-bold mb-4 text-center">Hợp Tác & Góp Ý</h1>
+                <p class="text-center text-gray-600 mb-8">Tư vấn Pháp Luật luôn mong muốn lắng nghe ý kiến đóng góp từ người dùng và các đối tác để cải thiện nội dung và chất lượng dịch vụ.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 flex flex-col items-center text-center">
+                        <i data-lucide="clipboard-list" class="w-12 h-12 text-blue-600 mb-4"></i>
+                        <h2 class="text-2xl font-semibold mb-3">Tham gia khảo sát</h2>
+                        <p class="text-gray-700 mb-4">Giúp chúng tôi hiểu rõ hơn nhu cầu của bạn về thông tin pháp lý. Ý kiến của bạn vô cùng quan trọng!</p>
+                        <button class="w-full bg-blue-600 text-white font-medium py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors">Bắt đầu khảo sát</button>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                        <h2 class="text-2xl font-semibold mb-4 text-center">Gửi góp ý / Hợp tác</h2>
+                        <form action="#" class="space-y-4">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700">Họ tên</label>
+                                <input type="text" id="name" class="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="email" class="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-gray-700">Nội dung</label>
+                                <textarea id="message" rows="4" class="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-gray-700 text-white font-medium py-2.5 px-4 rounded-lg hover:bg-gray-800 transition-colors">Gửi liên hệ</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tiktok-page" class="content-page space-y-6">
+            <h1 class="text-3xl font-bold mb-6">TikTok Tuyên Truyền Pháp Luật</h1>
+            
+            <div class="flex flex-wrap gap-3">
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-full font-medium text-sm">Tất cả</button>
+                <button class="px-4 py-2 bg-white border rounded-full font-medium text-sm text-gray-700 hover:bg-gray-100 transition-colors">Đời sống</button>
+                <button class="px-4 py-2 bg-white border rounded-full font-medium text-sm text-gray-700 hover:bg-gray-100 transition-colors">Mẹo pháp lý</button>
+                <button class="px-4 py-2 bg-white border rounded-full font-medium text-sm text-gray-700 hover:bg-gray-100 transition-colors">Tình huống thực tế</button>
+                <button class="px-4 py-2 bg-white border rounded-full font-medium text-sm text-gray-700 hover:bg-gray-100 transition-colors">Luật mới</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem;">
+                <div class="bg-white rounded-lg shadow overflow-hidden group">
+                    <div class="aspect-w-9 aspect-h-16 bg-gray-900 relative">
+                        <img src="https://placehold.co/300x530/111827/FFFFFF?text=Video+1" alt="TikTok Video" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                            <i data-lucide="play" class="w-16 h-16 text-white"></i>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <p class="font-medium line-clamp-2">5 điều cần biết khi ký hợp đồng lao động 2025</p>
+                        <span class="text-sm text-gray-500">#meophaply #laodong</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow overflow-hidden group">
+                    <div class="aspect-w-9 aspect-h-16 bg-gray-900 relative">
+                        <img src="https://placehold.co/300x530/111827/FFFFFF?text=Video+2" alt="TikTok Video" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                            <i data-lucide="play" class="w-16 h-16 text-white"></i>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <p class="font-medium line-clamp-2">Làm gì khi bị CSGT dừng xe kiểm tra?</p>
+                        <span class="text-sm text-gray-500">#giaothong #doisong</span>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-lg shadow overflow-hidden group">
+                    <div class="aspect-w-9 aspect-h-16 bg-gray-900 relative">
+                        <img src="https://placehold.co/300x530/111827/FFFFFF?text=Video+3" alt="TikTok Video" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                            <i data-lucide="play" class="w-16 h-16 text-white"></i>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <p class="font-medium line-clamp-2">Di chúc miệng có hợp pháp không?</p>
+                        <span class="text-sm text-gray-500">#thua_ke #tinhhuong</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow overflow-hidden group">
+                    <div class="aspect-w-9 aspect-h-16 bg-gray-900 relative">
+                        <img src="https://placehold.co/300x530/111827/FFFFFF?text=Video+4" alt="TikTok Video" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                            <i data-lucide="play" class="w-16 h-16 text-white"></i>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <p class="font-medium line-clamp-2">Cấp sổ đỏ cho đất không giấy tờ (Luật Đất đai mới)</p>
+                        <span class="text-sm text-gray-500">#luatmoi #datdai</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-page" class="content-page">
+            <div class="flex h-full min-h-screen bg-gray-100 text-gray-800">
+                <aside class="w-64 flex-shrink-0 bg-gray-800 text-gray-300 p-4 flex flex-col">
+                    <div class="text-white text-xl font-semibold flex items-center mb-6">
+                        <i data-lucide="shield-check" class="w-8 h-8 mr-2 text-blue-400"></i>
+                        <span>Admin Panel</span>
+                    </div>
+            
+                    <nav class="flex-grow">
+                        <a href="#" class="flex items-center px-3 py-2.5 rounded-lg bg-blue-600 text-white font-medium">
+                            <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
+                            <span>Bảng điều khiển</span>
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2.5 rounded-lg mt-2 hover:bg-gray-700 transition-colors">
+                            <i data-lucide="file-text" class="w-5 h-5 mr-3"></i>
+                            <span>Quản lý Bài viết</span>
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2.5 rounded-lg mt-2 hover:bg-gray-700 transition-colors">
+                            <i data-lucide="book-copy" class="w-5 h-5 mr-3"></i>
+                            <span>Quản lý Văn bản</span>
+                        </a>
+                         <a href="#" class="flex items-center px-3 py-2.5 rounded-lg mt-2 hover:bg-gray-700 transition-colors">
+                            <i data-lucide="bot" class="w-5 h-5 mr-3"></i>
+                            <span>Quản lý Chatbot</span>
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2.5 rounded-lg mt-2 hover:bg-gray-700 transition-colors">
+                            <i data-lucide="users" class="w-5 h-5 mr-3"></i>
+                            <span>Quản lý Người dùng</span>
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2.5 rounded-lg mt-2 hover:bg-gray-700 transition-colors">
+                            <i data-lucide="settings" class="w-5 h-5 mr-3"></i>
+                            <span>Cài đặt</span>
+                        </a>
+                    </nav>
+                    
+                    <div class="mt-auto">
+                         <a href="#" data-page="home" class="nav-link-internal flex items-center px-3 py-2.5 rounded-lg mt-2 text-red-400 hover:bg-red-500 hover:text-white transition-colors">
+                            <i data-lucide="log-out" class="w-5 h-5 mr-3"></i>
+                            <span>Quay về trang chủ</span>
+                        </a>
+                    </div>
+                </aside>
+            
+                <div class="flex-1 flex flex-col">
+                    <header class="bg-white shadow-md p-4 flex justify-between items-center">
+                        <div class="relative w-1/3">
+                            <input type="search" placeholder="Tìm kiếm..." class="w-full bg-gray-100 p-2 pl-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <button class="text-gray-600 hover:text-blue-600">
+                                <i data-lucide="bell" class="w-6 h-6"></i>
+                            </button>
+                            <div class="flex items-center">
+                                <img src="https://placehold.co/40x40/E2E8F0/334155?text=A" alt="Admin Avatar" class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <div class="font-semibold">Admin Name</div>
+                                    <div class="text-sm text-gray-500">administrator</div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+            
+                    <main class="flex-1 p-6 space-y-6">
+                        <h1 class="text-3xl font-bold">Bảng điều khiển</h1>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="bg-white p-5 rounded-lg shadow flex justify-between items-center">
+                                <div>
+                                    <div class="text-sm text-gray-500">Lượt truy cập</div>
+                                    <div class="text-2xl font-bold">1,234</div>
+                                </div>
+                                <div class="bg-blue-100 text-blue-600 p-3 rounded-full">
+                                    <i data-lucide="eye" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow flex justify-between items-center">
+                                <div>
+                                    <div class="text-sm text-gray-500">Số bài viết</div>
+                                    <div class="text-2xl font-bold">56</div>
+                                </div>
+                                <div class="bg-green-100 text-green-600 p-3 rounded-full">
+                                    <i data-lucide="file-text" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow flex justify-between items-center">
+                                <div>
+                                    <div class="text-sm text-gray-500">Lượt hỏi Chatbot</div>
+                                    <div class="text-2xl font-bold">789</div>
+                                </div>
+                                <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full">
+                                    <i data-lucide="message-circle" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow flex justify-between items-center">
+                                <div>
+                                    <div class="text-sm text-gray-500">Người dùng</div>
+                                    <div class="text-2xl font-bold">120</div>
+                                </div>
+                                <div class="bg-indigo-100 text-indigo-600 p-3 rounded-full">
+                                    <i data-lucide="users" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-semibold">Bài viết gần đây</h2>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 flex items-center">
+                                    <i data-lucide="plus" class="w-5 h-5 mr-1.5"></i> Thêm mới
+                                </button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th class="p-3 font-semibold">Tiêu đề</th>
+                                            <th class="p-3 font-semibold">Tác giả</th>
+                                            <th class="p-3 font-semibold">Trạng thái</th>
+                                            <th class="p-3 font-semibold">Ngày đăng</th>
+                                            <th class="p-3 font-semibold">Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b hover:bg-gray-50">
+                                            <td class="p-3 font-medium">Luật Đất đai 2024: 10 điểm mới</td>
+                                            <td class="p-3">Admin</td>
+                                            <td class="p-3">
+                                                <span class="bg-green-100 text-green-700 px-2 py-1 text-xs font-semibold rounded-full">Đã xuất bản</span>
+                                            </td>
+                                            <td class="p-3">28/10/2025</td>
+                                            <td class="p-3 flex space-x-2">
+                                                <button class="text-blue-600 hover:text-blue-800" title="Sửa"><i data-lucide="file-pen-line" class="w-5 h-5"></i></button>
+                                                <button class="text-red-600 hover:text-red-800" title="Xóa"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr class="border-b hover:bg-gray-50">
+                                            <td class="p-3 font-medium">Quy định về đăng ký khai sinh trực tuyến</td>
+                                            <td class="p-3">Admin</td>
+                                            <td class="p-3">
+                                                <span class="bg-green-100 text-green-700 px-2 py-1 text-xs font-semibold rounded-full">Đã xuất bản</span>
+                                            </td>
+                                            <td class="p-3">27/10/2025</td>
+                                            <td class="p-3 flex space-x-2">
+                                                <button class="text-blue-600 hover:text-blue-800" title="Sửa"><i data-lucide="file-pen-line" class="w-5 h-5"></i></button>
+                                                <button class="text-red-600 hover:text-red-800" title="Xóa"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                                            </td>
+                                        </tr>
+                                         <tr class="border-b hover:bg-gray-50">
+                                            <td class="p-3 font-medium">Cảnh báo lừa đảo mạo danh công an</td>
+                                            <td class="p-3">Biên tập viên</td>
+                                            <td class="p-3">
+                                                <span class="bg-yellow-100 text-yellow-700 px-2 py-1 text-xs font-semibold rounded-full">Chờ duyệt</span>
+                                            </td>
+                                            <td class="p-3">26/10/2025</td>
+                                            <td class="p-3 flex space-x-2">
+                                                <button class="text-blue-600 hover:text-blue-800" title="Sửa"><i data-lucide="file-pen-line" class="w-5 h-5"></i></button>
+                                                <button class="text-red-600 hover:text-red-800" title="Xóa"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+
+        <div id="login-page" class="content-page">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <h1 class="text-3xl font-bold mb-6 text-center">Đăng Nhập Tài Khoản</h1>
+                
+                <form action="#" class="space-y-6">
+                    <div>
+                        <label for="login-email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="login-email" placeholder="example@gmail.com" class="mt-1 w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="login-password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
+                        <input type="password" id="login-password" placeholder="••••••••" class="mt-1 w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                            <label for="remember-me" class="ml-2 block text-sm text-gray-900">Ghi nhớ đăng nhập</label>
+                        </div>
+                        <a href="#" class="text-sm text-blue-600 hover:underline">Quên mật khẩu?</a>
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-medium py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                            Đăng nhập
+                        </button>
+                    </div>
+                </form>
+
+                <p class="text-center text-sm text-gray-600 mt-6">
+                    Chưa có tài khoản? 
+                    <a href="#" class="font-medium text-blue-600 hover:underline">Đăng ký ngay</a>
+                </p>
+                <p class="text-center text-xs text-gray-500 mt-4">Tính năng "Tài khoản người dùng" cần có Backend và Cơ sở dữ liệu để hoạt động.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="document-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-[60]">
+        <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] flex flex-col">
+            <header class="p-4 border-b flex justify-between items-center flex-shrink-0">
+                <h2 id="modal-title" class="text-2xl font-semibold text-gray-800">Tiêu đề văn bản</h2>
+                <button id="modal-close-btn" class="text-gray-500 hover:text-red-600 p-2 rounded-full transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </header>
+            <main id="modal-content" class="p-6 overflow-y-auto prose max-w-none">
+                </main>
+        </div>
+    </div>
+    <footer class="bg-gray-800 text-gray-300 mt-12">
+        <div class="container mx-auto px-6 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4">Tư vấn Pháp Luật</h3>
+                    <p class="text-sm">Mang thông tin pháp luật đến gần hơn với mọi người. Dễ hiểu - Tin cậy - Kịp thời.</p>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white" title="Facebook"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white" title="Youtube"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white" title="TikTok"><i data-lucide="music-2" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Liên kết nhanh</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" data-page="home" class="nav-link-internal hover:text-white">Trang chủ</a></li>
+                        <li><a href="#" data-page="chatbot" class="nav-link-internal hover:text-white">Hỏi đáp AI</a></li>
+                        <li><a href="#" data-page="documents" class="nav-link-internal hover:text-white">Tra cứu văn bản</a></li>
+                        <li><a href="#" data-page="news" class="nav-link-internal hover:text-white">Tin tức pháp luật</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Chủ đề chính</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white">Luật Đất đai</a></li>
+                        <li><a href="#" class="hover:text-white">Hôn nhân & Gia đình</a></li>
+                        <li><a href="#" class="hover:text-white">Lao động & Việc làm</a></li>
+                        <li><a href="#" class="hover:text-white">Doanh nghiệp</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Liên hệ</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> lienhe@tuvanphapluat.com</li>
+                        <li class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i> 1900 1234</li>
+                        <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> Hồ Chí Minh, Việt Nam</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm">
+                <p>&copy; 2025 Tư vấn Pháp Luật. Mọi quyền được bảo lưu.</p>
+                <p class="mt-1">Thông tin trên website chỉ mang tính chất tham khảo, không thay thế tư vấn pháp lý chuyên nghiệp.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // Kích hoạt icons
+        lucide.createIcons();
+        
+        // --- Logic Điều hướng Trang (SPA Giả lập) ---
+        const navLinks = document.querySelectorAll('.nav-link');
+        const internalLinks = document.querySelectorAll('.nav-link-internal');
+        const contentPages = document.querySelectorAll('.content-page');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function changePage(pageId) {
+            const mainHeader = document.querySelector('body > header');
+            const mainFooter = document.querySelector('footer');
+            const mainContentContainer = document.getElementById('content-container');
+
+            // Kiểm tra nếu là trang admin
+            if (pageId === 'admin') {
+                // Ẩn header và footer của trang chính
+                if (mainHeader) mainHeader.style.display = 'none';
+                if (mainFooter) mainFooter.style.display = 'none';
+                // Xóa padding và class container để admin page chiếm toàn bộ không gian
+                mainContentContainer.classList.remove('p-4', 'md:p-8', 'container', 'mx-auto');
+            } else {
+                // Hiện lại header và footer cho các trang khác
+                if (mainHeader) mainHeader.style.display = 'block';
+                if (mainFooter) mainFooter.style.display = 'block';
+                // Thêm lại padding và class container cho các trang khác
+                mainContentContainer.classList.add('p-4', 'md:p-8', 'container', 'mx-auto');
+            }
+
+            // Ẩn tất cả các trang
+            contentPages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Bỏ active tất cả các link
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Hiển thị trang được chọn
+            const targetPage = document.getElementById(pageId + '-page');
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Active link được chọn
+            document.querySelectorAll(`.nav-link[data-page="${pageId}"]`).forEach(link => {
+                link.classList.add('active');
+            });
+
+            window.scrollTo(0, 0);
+            mobileMenu.classList.add('hidden');
+        }
+
+        // Thêm sự kiện click cho các nav link chính
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = e.currentTarget.getAttribute('data-page');
+                if (pageId) changePage(pageId);
+            });
+        });
+
+        // Thêm sự kiện click cho các link nội bộ
+        internalLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = e.currentTarget.getAttribute('data-page');
+                if (pageId) changePage(pageId);
+            });
+        });
+
+        // Sự kiện cho nút menu mobile
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- Logic Chatbot (Mô phỏng) ---
+        const chatHistory = document.getElementById('chat-history');
+        const chatInput = document.getElementById('chat-input');
+        const sendChatBtn = document.getElementById('send-chat-btn');
+        const suggestedQuestions = document.querySelectorAll('.suggested-question');
+
+        function addChatMessage(message, sender = 'user') {
+            const messageElement = document.createElement('div');
+            
+            if (sender === 'user') {
+                messageElement.className = 'flex justify-end items-start gap-3';
+                messageElement.innerHTML = `
+                    <div class="bg-blue-600 text-white p-4 rounded-lg shadow-sm" style="max-width: 70%;">
+                        <p>${message}</p>
+                    </div>
+                    <div class="bg-gray-300 text-gray-700 p-2.5 rounded-full w-10 h-10 flex-shrink-0 flex items-center justify-center">
+                        <i data-lucide="user" class="w-6 h-6"></i>
+                    </div>
+                `;
+            } else { // sender === 'bot'
+                messageElement.className = 'flex items-start gap-3';
+                messageElement.innerHTML = `
+                    <div class="bg-blue-600 text-white p-2.5 rounded-full w-10 h-10 flex-shrink-0 flex items-center justify-center">
+                        <i data-lucide="bot" class="w-6 h-6"></i>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm" style="max-width: 70%;">
+                        <p class="font-semibold text-blue-700">Bot Tư Vấn</p>
+                        <div class="text-gray-800">${message}</div>
+                    </div>
+                `;
+            }
+            
+            chatHistory.appendChild(messageElement);
+            lucide.createIcons();
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+        
+        function sendUserMessage() {
+            const message = chatInput.value.trim();
+            if (message === '') return;
+            
+            addChatMessage(message, 'user');
+            chatInput.value = '';
+            
+            setTimeout(() => {
+                addChatMessage("Tôi đang tìm kiếm thông tin, vui lòng đợi trong giây lát...", 'bot');
+            }, 1000);
+            
+            setTimeout(() => {
+                let botResponse = "Đây là thông tin tôi tìm được: ... (Đây là câu trả lời mô phỏng. Để có chatbot thực sự, bạn cần kết nối với một mô hình AI).";
+                
+                if (message.toLowerCase().includes("ly hôn")) {
+                    botResponse = "<b>Về thủ tục ly hôn (tham khảo):</b><br>1. <b>Thuận tình:</b> Cả hai vợ chồng cùng ký vào đơn yêu cầu.<br>2. <b>Đơn phương:</b> Một bên nộp đơn khởi kiện tại Tòa án.<br><br><i>Lưu ý: Thông tin này chỉ để tham khảo.</i>";
+                } else if (message.toLowerCase().includes("đất đai") || message.toLowerCase().includes("sổ đỏ")) {
+                    botResponse = "<b>Về Luật Đất đai 2024 (tham khảo):</b><br>Luật mới có nhiều điểm nổi bật như: Bỏ khung giá đất và quy định cụ thể hơn về các trường hợp cấp Sổ đỏ cho đất không có giấy tờ.<br><br><i>Lưu ý: Thông tin này chỉ để tham khảo.</i>";
+                }
+                addChatMessage(botResponse, 'bot');
+            }, 2500);
+        }
+
+        sendChatBtn.addEventListener('click', sendUserMessage);
+        
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendUserMessage();
+        });
+
+        suggestedQuestions.forEach(button => {
+            button.addEventListener('click', () => {
+                chatInput.value = button.textContent;
+                sendUserMessage();
+            });
+        });
+
+        // --- PHẦN JS MỚI: LOGIC CHO MODAL HIỂN THỊ VĂN BẢN ---
+        
+        // 1. Dữ liệu văn bản mẫu (giả lập database)
+        const documentData = {
+            'dat-dai': {
+                title: 'Luật Đất đai 31/2024/QH15',
+                content: `
+                    <h3 class="text-xl font-bold mb-4">Chương I: QUY ĐỊNH CHUNG</h3>
+                    <div class="space-y-3">
+                        <p><b>Điều 1. Phạm vi điều chỉnh</b></p>
+                        <p>Luật này quy định về chế độ sở hữu đất đai, quyền hạn và trách nhiệm của Nhà nước đại diện chủ sở hữu toàn dân về đất đai và thống nhất quản lý về đất đai, chế độ quản lý và sử dụng đất đai, quyền và nghĩa vụ của người sử dụng đất đối với đất đai thuộc lãnh thổ của nước Cộng hòa xã hội chủ nghĩa Việt Nam.</p>
+                        <p><b>Điều 2. Đối tượng áp dụng</b></p>
+                        <p>1. Cơ quan nhà nước thực hiện quyền hạn và trách nhiệm của đại diện chủ sở hữu toàn dân về đất đai, thực hiện nhiệm vụ thống nhất quản lý nhà nước về đất đai.</p>
+                        <p>2. Người sử dụng đất.</p>
+                        <p>3. Các đối tượng khác có liên quan đến việc quản lý, sử dụng đất đai.</p>
+                    </div>
+                    <p class="mt-6 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 text-sm"><i>Lưu ý: Nội dung trên chỉ mang tính chất minh họa một phần.</i></p>`
+            },
+            'hon-nhan': {
+                title: 'Luật Hôn nhân và Gia đình 59/2014/QH13',
+                content: `
+                    <h3 class="text-xl font-bold mb-4">Chương I: NHỮNG QUY ĐỊNH CHUNG</h3>
+                    <div class="space-y-3">
+                        <p><b>Điều 1. Phạm vi điều chỉnh</b></p>
+                        <p>Luật này quy định chế độ hôn nhân và gia đình; chuẩn mực pháp lý cho cách ứng xử giữa các thành viên gia đình; trách nhiệm của cá nhân, tổ chức, Nhà nước và xã hội trong việc xây dựng, củng cố chế độ hôn nhân và gia đình.</p>
+                        <p><b>Điều 2. Những nguyên tắc cơ bản của chế độ hôn nhân và gia đình</b></p>
+                        <p>1. Hôn nhân tự nguyện, tiến bộ, một vợ một chồng, vợ chồng bình đẳng.</p>
+                        <p>2. Hôn nhân giữa công dân Việt Nam thuộc các dân tộc, tôn giáo, giữa người theo tôn giáo với người không theo tôn giáo, giữa người có tín ngưỡng với người không có tín ngưỡng, giữa công dân Việt Nam với người nước ngoài được tôn trọng và được pháp luật bảo vệ.</p>
+                    </div>
+                    <p class="mt-6 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 text-sm"><i>Lưu ý: Nội dung trên chỉ mang tính chất minh họa một phần.</i></p>`
+            },
+            'lao-dong': {
+                title: 'Bộ luật Lao động 45/2019/QH14',
+                content: `
+                    <h3 class="text-xl font-bold mb-4">Chương I: NHỮNG QUY ĐỊNH CHUNG</h3>
+                     <div class="space-y-3">
+                        <p><b>Điều 1. Phạm vi điều chỉnh</b></p>
+                        <p>Bộ luật Lao động quy định tiêu chuẩn lao động; quyền, nghĩa vụ, trách nhiệm của người lao động, người sử dụng lao động, tổ chức đại diện người lao động tại cơ sở, tổ chức đại diện người sử dụng lao động trong quan hệ lao động và các quan hệ khác liên quan trực tiếp đến quan hệ lao động; quản lý nhà nước về lao động.</p>
+                        <p><b>Điều 3. Giải thích từ ngữ</b></p>
+                        <p>1. Người lao động là người làm việc cho người sử dụng lao động theo thỏa thuận, được trả lương và chịu sự quản lý, điều hành, giám sát của người sử dụng lao động.</p>
+                    </div>
+                    <p class="mt-6 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 text-sm"><i>Lưu ý: Nội dung trên chỉ mang tính chất minh họa một phần.</i></p>`
+            }
+        };
+
+        // 2. Lấy các phần tử DOM của Modal
+        const documentModal = document.getElementById('document-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const documentLinks = document.querySelectorAll('#documents-page table td[data-doc-id]');
+
+        // 3. Hàm để mở/đóng modal
+        function openDocumentModal(docId) {
+            const doc = documentData[docId];
+            if (!doc) {
+                console.error('Không tìm thấy dữ liệu cho văn bản:', docId);
+                return;
+            }
+            modalTitle.textContent = doc.title;
+            modalContent.innerHTML = doc.content;
+            documentModal.classList.remove('hidden');
+            documentModal.classList.add('flex'); // Dùng flex để căn giữa
+            document.body.style.overflow = 'hidden'; // Chặn cuộn trang nền
+        }
+
+        function closeDocumentModal() {
+            documentModal.classList.add('hidden');
+            documentModal.classList.remove('flex');
+            document.body.style.overflow = ''; // Cho phép cuộn trang nền trở lại
+        }
+
+        // 4. Gán sự kiện
+        documentLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const docId = link.getAttribute('data-doc-id');
+                openDocumentModal(docId);
+            });
+        });
+
+        modalCloseBtn.addEventListener('click', closeDocumentModal);
+        
+        // Đóng modal khi click vào vùng nền đen bên ngoài
+        documentModal.addEventListener('click', (e) => {
+            if (e.target === documentModal) {
+                closeDocumentModal();
+            }
+        });
+
+    });
+    </script>
+</body>
+</html>
